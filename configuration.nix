@@ -200,6 +200,7 @@
     wireshark
     mitmproxy
     openssl
+    httptoolkit
 
     # --- Web & API Testing ---
     burpsuite
@@ -209,6 +210,7 @@
     apktool
     jadx 
     apksigner
+    flutter
 
     # --- Reverse Engineering ---
     ghidra
