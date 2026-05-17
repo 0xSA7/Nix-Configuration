@@ -10,7 +10,10 @@
   # ==========================================
   # LICENSE CONFIGURATION
   # ==========================================
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config={
+ 	allowUnfree = true;
+	android_sdk.accept_license = true;
+  };
 
   # ==========================================
   # BOOT & KERNEL TWEAKS
@@ -53,13 +56,20 @@
   # ==========================================
   # STORAGE OPTIMIZATION
   # ==========================================
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
+  nix = {
+    gc = {
+    	automatic = true;
+    	dates = "weekly";
+    	options = "--delete-older-than 7d";
+    };
+    settings ={
+     	auto-optimise-store = true;
+ 	experimental-features = [
+  		"nix-command"
+  		"flakes"
+  	];
+     };
   };
-  nix.settings.auto-optimise-store = true;
-
   # ==========================================
   # NETWORKING & LOCALIZATION
   # ==========================================
@@ -149,10 +159,19 @@
  # virtualisation.vmware.host.enable = true; # <--- Added VMware Service here
   programs.wireshark.enable = true;
   programs.adb.enable = true;
+  programs.nix-ld.enable = true;
+  programs.java.enable = true;
+  programs.java.package = pkgs.jdk17;
+
+  environment.variables = {
+  	ANDROID_HOME = "/home/sa7/Android/Sdk";
+  	ANDROID_SDK_ROOT = "/home/sa7/Android/Sdk";
+  };
 
   # ==========================================
   # SYSTEM PACKAGES
   # ==========================================
+  
   environment.systemPackages = with pkgs; [
     # --- Desktop & GUI Apps ---
     discord
@@ -167,7 +186,8 @@
     scrcpy
     android-tools
     steam-run    
-    # --- GPU Utils ---
+
+  # --- GPU Utils ---
     libva
     libva-utils
     vulkan-tools
@@ -233,7 +253,6 @@
     python3
     python3Packages.pip
     python3Packages.virtualenv
-    jdk17
     sqlite
 
     # --- Containerization ---
